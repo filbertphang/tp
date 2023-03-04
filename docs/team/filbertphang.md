@@ -31,7 +31,7 @@ Given below are my contributions to the project.
         * Added documentation for the features `xx` and `xx` [\#]()
         * Did cosmetic tweaks to existing documentation of features `xx`, `xx`: [\#]()
     * Developer Guide:
-        * Added implementation details of the `xx` feature.
+        * Added user profile
 
 * **Community**:
     * PRs reviewed (with non-trivial review comments): [\#3]()

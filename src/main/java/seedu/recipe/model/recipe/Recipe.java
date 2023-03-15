@@ -1,12 +1,15 @@
 package seedu.recipe.model.recipe;
 
-import static seedu.recipe.commons.util.CollectionUtil.requireAllNonNull;
-
-import java.util.*;
-
-import seedu.recipe.model.recipe.exceptions.RecipeDurationNotPresentException;
 import seedu.recipe.model.recipe.exceptions.RecipePortionNotPresentException;
 import seedu.recipe.model.tag.Tag;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import static seedu.recipe.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
  * Represents a Recipe in the recipe book.

@@ -1,18 +1,6 @@
 package seedu.recipe.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.recipe.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.recipe.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.recipe.testutil.Assert.assertThrows;
-import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Test;
-
 import seedu.recipe.logic.commands.AddCommand;
 import seedu.recipe.logic.commands.ClearCommand;
 import seedu.recipe.logic.commands.DeleteCommand;
@@ -28,9 +16,20 @@ import seedu.recipe.testutil.EditPersonDescriptorBuilder;
 import seedu.recipe.testutil.PersonBuilder;
 import seedu.recipe.testutil.PersonUtil;
 
-public class AddressBookParserTest {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    private final AddressBookParser parser = new AddressBookParser();
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.recipe.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.recipe.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.recipe.testutil.Assert.assertThrows;
+import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+public class RecipeBookParserTest {
+
+    private final RecipeBookParser parser = new RecipeBookParser();
 
     @Test
     public void parseCommand_add() throws Exception {

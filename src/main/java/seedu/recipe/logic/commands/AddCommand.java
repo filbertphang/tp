@@ -13,13 +13,13 @@ import static seedu.recipe.logic.parser.CliSyntax.PREFIX_STEP;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
 
 /**
- * Adds a recipe to the address book.
+ * Adds a recipe to the recipe book.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a recipe to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a recipe to the recipe book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + "[" + PREFIX_DURATION + "DURATION] "
@@ -41,7 +41,7 @@ public class AddCommand extends Command {
             + PREFIX_STEP + "In a bowl, combine the parmesan and the egg yolks";
 
     public static final String MESSAGE_SUCCESS = "New recipe added: %1$s";
-    public static final String MESSAGE_DUPLICATE_RECIPE = "This recipe already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_RECIPE = "This recipe already exists in the recipe book";
 
     private final Recipe toAdd;
 

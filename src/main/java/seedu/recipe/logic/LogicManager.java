@@ -1,21 +1,21 @@
 package seedu.recipe.logic;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.logging.Logger;
-
 import javafx.collections.ObservableList;
 import seedu.recipe.commons.core.GuiSettings;
 import seedu.recipe.commons.core.LogsCenter;
 import seedu.recipe.logic.commands.Command;
 import seedu.recipe.logic.commands.CommandResult;
 import seedu.recipe.logic.commands.exceptions.CommandException;
-import seedu.recipe.logic.parser.AddressBookParser;
+import seedu.recipe.logic.parser.RecipeBookParser;
 import seedu.recipe.logic.parser.exceptions.ParseException;
 import seedu.recipe.model.Model;
 import seedu.recipe.model.ReadOnlyRecipeBook;
 import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.storage.Storage;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.logging.Logger;
 
 /**
  * The main LogicManager of the app.
@@ -26,7 +26,7 @@ public class LogicManager implements Logic {
 
     private final Model model;
     private final Storage storage;
-    private final AddressBookParser addressBookParser;
+    private final RecipeBookParser recipeBookParser;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -34,7 +34,7 @@ public class LogicManager implements Logic {
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.storage = storage;
-        addressBookParser = new AddressBookParser();
+        recipeBookParser = new RecipeBookParser();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = recipeBookParser.parseCommand(commandText);
         commandResult = command.execute(model);
 
         try {
@@ -55,7 +55,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ReadOnlyRecipeBook getAddressBook() {
+    public ReadOnlyRecipeBook getRecipeBook() {
         return model.getRecipeBook();
     }
 
@@ -65,7 +65,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
+    public Path getRecipeBookFilePath() {
         return model.getRecipeBookFilePath();
     }
 

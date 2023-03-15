@@ -3,14 +3,15 @@ package seedu.recipe.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.*;
+import seedu.recipe.model.recipe.unit.*;
 import seedu.recipe.model.tag.Tag;
 
 /**
@@ -19,61 +20,47 @@ import seedu.recipe.model.tag.Tag;
 class JsonAdaptedRecipe {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Recipe's %s field is missing!";
+    private String name;
+    private String portion;
+    private String duration;
+    private String tags;
+    private String ingredients;
+    private String steps;
 
-    private Optional<RecipePortion> portion = Optional.empty();
-    private Optional<RecipeDuration> duration = Optional.empty();
-    private Optional<Set<Tag>> tags = Optional.empty();
-    private Optional<List<Ingredient>> ingredients = Optional.empty();
-    private Optional<List<Step>> steps = Optional.empty();
-
-    private final String name;
-    private final String phone;
-    private final String email;
-    private final String address;
-    private final List<JsonAdaptedTag> tagged = new ArrayList<>();
-    private final String step;
     /**
      * Constructs a {@code JsonAdaptedRecipe} with the given recipe details.
      */
     @JsonCreator
-    public JsonAdaptedRecipe(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("tagged") List<JsonAdaptedTag> tagged, @JsonProperty("step") String step) {
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        if (tagged != null) {
-            this.tagged.addAll(tagged);
-        }
-        this.step = step;
+    public JsonAdaptedRecipe(@JsonProperty("name") Name name, @JsonProperty("portion") Optional<RecipePortion> portion,
+            @JsonProperty("duration") Optional<RecipeDuration> duration, @JsonProperty("ingredient") Optional<List<Ingredient>> ingredients,
+            @JsonProperty("tags") Optional<Set<Tag>> tags, @JsonProperty("steps") Optional<List<Step>> steps) {
+        this.name = name.toString();
+        this.portion = portion.toString();
+        this.duration = duration.toString();
+        this.ingredients = ingredients.toString();
+        this.tags = tags.toString();
+        this.steps = steps.toString();
     }
 
     /**
      * Converts a given {@code Recipe} into this class for Jackson use.
      */
     public JsonAdaptedRecipe(Recipe source) {
-        name = source.getName().recipeName;
-        phone = source.getIngredient().value;
-        email = source.getEmail().value;
-        address = source.getAddress().value;
-        tagged.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
-                .collect(Collectors.toList()));
-        step = source.getStep().description;
+        name = source.getName().toString();
+        portion = source.getPortion().toString();
+        duration = source.getDuration().toString();
+        ingredients = source.getIngredients().toString();
+        tags = source.getTags().toString();
+        steps = source.getSteps().toString();
     }
 
     /**
      * Converts this Jackson-friendly adapted recipe object into the model's {@code Recipe} object.
+     * Remember only name field is required, and the rest are optional. 
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted recipe.
      */
     public Recipe toModelType() throws IllegalValueException {
-        final List<Tag> recipeTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tagged) {
-            recipeTags.add(tag.toModelType());
-        }
-
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
@@ -82,41 +69,69 @@ class JsonAdaptedRecipe {
         }
         final Name modelName = new Name(name);
 
-        if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    Ingredient.class.getSimpleName()));
-        }
-        if (!Ingredient.isValidIngredient(phone)) {
-            throw new IllegalValueException(Ingredient.MESSAGE_CONSTRAINTS);
-        }
-        final Ingredient modelIngredient = new Ingredient(phone);
+        // Example portion input is "10-20 g"
+        String[] parameters = portion.split("[-,\\s+]");
+        int lowerRange = Integer.parseInt(parameters[0]);
+        int upperRange = Integer.parseInt(parameters[1]);
+        PortionUnit portionUnit = new PortionUnit(parameters[2]);
+        final Optional<RecipePortion> optionalModelPortion = Optional.of(new RecipePortion(lowerRange, upperRange, portionUnit));
 
-        if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
-        }
-        if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
-        }
-        final Email modelEmail = new Email(email);
+        // Example RecipeDuration input is "15 m"
+        parameters = duration.split(" ");
+        double time = Double.parseDouble(parameters[0]);
+        TimeUnit timeUnit = new TimeUnit(parameters[1]);        
+        final Optional<RecipeDuration> optionalModelDuration = Optional.of(new RecipeDuration(time, timeUnit));
 
-        if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
-        }
-        if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
-        }
-        final Address modelAddress = new Address(address);
+        // Example RecipeIngredient input is "2 potato" (minimum)
+        // Example RecipeIngredient input is "5 tbsp pepper/salt" (maximum)
+        List<Ingredient> OutputIngredientList = new ArrayList<>();
+        String[] ingredientsArray= ingredients.split(",");
+        for (String ingredient : ingredientsArray) {
+            parameters = ingredient.split("[\\s+,/]"); 
+            double ingredientAmount = Double.parseDouble(parameters[0]);
+            IngredientAmountUnit ingredientUnit = new IngredientAmountUnit(parameters[1]);        
+            String ingredientName = parameters[2];
+            try{
+                HashSet<Ingredient> substitutions = new HashSet<>();
+                String[] substitutionsArray = parameters[3].split("[\\s+]");
+                for (String substitution : substitutionsArray) {
+                    Ingredient newSubstitution = new Ingredient(substitution);
+                    substitutions.add(newSubstitution);
+                }
+            }catch(ArrayIndexOutOfBoundsException e) {
+                System.out.println(e.getMessage());
+            }finally {
+                RecipeIngredient newIngredient = new RecipeIngredient(ingredientName, ingredientAmount);
+                OutputIngredientList.add(newIngredient);
+            }       
+        }    
+        /*Right now RecipeIngredient has no way to take in Unit and Substitution in constructor method,
+        so either we add it or we just set() unit and substitution under modelIngredients here.
+        */
+        Optional<List<Ingredient>> ingredients = Optional.of(OutputIngredientList);
 
-        if (step == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Step.class.getSimpleName()));
+        List<Step> stepList = new ArrayList<>();
+        String[] stepArray = steps.split(",");
+        for (String step : stepArray) {
+            Step newStep = new Step(step);
+            stepList.add(newStep);
         }
-        if (!Step.isValidStep(step)) {
-            throw new IllegalValueException(Step.MESSAGE_CONSTRAINTS);
+        if (!stepList.isEmpty()) {
+            Optional<List<Step>> steps = Optional.of(stepList);
         }
-        final Step modelStep = new Step(step);
-
-        final Set<Tag> modelTags = new HashSet<>(recipeTags);
-        return new Recipe(modelName, modelIngredient, modelEmail, modelAddress, modelTags, modelStep);
+        
+        Set<Tag> output = new HashSet<>();
+        String[] tagList = tags.split(",");
+        for (String tag : tagList) {
+            Tag newTag = new Tag(tag);
+            output.add(newTag);
+        }
+        if (!output.isEmpty()) {
+            final Optional<Set<Tag>> optionalModelTags = Optional.of(output);
+        }
+        Recipe res = new Recipe(modelName);
+        //Setter methods/overloaded constructor
+        return res;
     }
 
 }

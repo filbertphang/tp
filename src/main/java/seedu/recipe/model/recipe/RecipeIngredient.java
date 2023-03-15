@@ -48,7 +48,8 @@ public class RecipeIngredient extends Ingredient {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(amount).append(" ").append(" ").append(unit).append(name).append("/").append(substitutions.toString());
+        sb.append(amount).append(" ").append(unit).append(" ")
+        .append(name).append("/").append(substitutions.toString());
         return sb.toString();
     }
 }

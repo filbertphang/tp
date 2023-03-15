@@ -2,7 +2,6 @@ package seedu.recipe.model.recipe;
 
 import seedu.recipe.model.recipe.exceptions.RecipeDurationInvalidArgumentLengthException;
 import seedu.recipe.model.recipe.exceptions.RecipeDurationInvalidDurationException;
-import seedu.recipe.model.recipe.exceptions.RecipePortionNotPresentException;
 import seedu.recipe.model.recipe.unit.TimeUnit;
 
 import java.util.Objects;
@@ -16,7 +15,7 @@ public class RecipeDuration {
             "^\\d+(.\\d+)?\\s+[A-Za-z]*$";
 
     public static final String MESSAGE_CONSTRAINTS =
-            "A Recipe Duration should consist of a numeric/decimal portion and an alphanumeric time unit";
+            "A Recipe Duration should consist of a numeric/decimal section and an alphanumeric time unit";
 
     private RecipeDuration(double time, TimeUnit unit){
         this.time = time;

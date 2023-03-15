@@ -1,5 +1,12 @@
 package seedu.recipe.testutil;
 
+import seedu.recipe.model.RecipeBook;
+import seedu.recipe.model.recipe.Recipe;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
@@ -10,13 +17,6 @@ import static seedu.recipe.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.recipe.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import seedu.recipe.model.RecipeBook;
-import seedu.recipe.model.recipe.Recipe;
 
 /**
  * A utility class containing a list of {@code Recipe} objects to be used in tests.
@@ -63,11 +63,11 @@ public class TypicalPersons {
      * Returns an {@code AddressBook} with all the typical persons.
      */
     public static RecipeBook getTypicalAddressBook() {
-        RecipeBook ab = new RecipeBook();
+        RecipeBook rb = new RecipeBook();
         for (Recipe recipe : getTypicalPersons()) {
-            ab.addRecipe(recipe);
+            rb.addRecipe(recipe);
         }
-        return ab;
+        return rb;
     }
 
     public static List<Recipe> getTypicalPersons() {

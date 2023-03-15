@@ -16,9 +16,15 @@ import seedu.recipe.model.tag.Tag;
 /**
  * Jackson-friendly version of {@link Recipe}.
  */
-class JsonAdaptedPerson {
+class JsonAdaptedRecipe {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Recipe's %s field is missing!";
+
+    private Optional<RecipePortion> portion = Optional.empty();
+    private Optional<RecipeDuration> duration = Optional.empty();
+    private Optional<Set<Tag>> tags = Optional.empty();
+    private Optional<List<Ingredient>> ingredients = Optional.empty();
+    private Optional<List<Step>> steps = Optional.empty();
 
     private final String name;
     private final String phone;
@@ -27,10 +33,10 @@ class JsonAdaptedPerson {
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
     private final String step;
     /**
-     * Constructs a {@code JsonAdaptedPerson} with the given recipe details.
+     * Constructs a {@code JsonAdaptedRecipe} with the given recipe details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
+    public JsonAdaptedRecipe(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("tagged") List<JsonAdaptedTag> tagged, @JsonProperty("step") String step) {
         this.name = name;
@@ -46,7 +52,7 @@ class JsonAdaptedPerson {
     /**
      * Converts a given {@code Recipe} into this class for Jackson use.
      */
-    public JsonAdaptedPerson(Recipe source) {
+    public JsonAdaptedRecipe(Recipe source) {
         name = source.getName().recipeName;
         phone = source.getIngredient().value;
         email = source.getEmail().value;
@@ -63,9 +69,9 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted recipe.
      */
     public Recipe toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> recipeTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tagged) {
-            personTags.add(tag.toModelType());
+            recipeTags.add(tag.toModelType());
         }
 
         if (name == null) {
@@ -109,7 +115,7 @@ class JsonAdaptedPerson {
         }
         final Step modelStep = new Step(step);
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
+        final Set<Tag> modelTags = new HashSet<>(recipeTags);
         return new Recipe(modelName, modelIngredient, modelEmail, modelAddress, modelTags, modelStep);
     }
 

@@ -5,41 +5,41 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.recipe.commons.exceptions.DataConversionException;
-import seedu.recipe.model.ReadOnlyAddressBook;
+import seedu.recipe.model.ReadOnlyRecipeBook;
 
 /**
- * Represents a storage for {@link seedu.recipe.model.AddressBook}.
+ * Represents a storage for {@link seedu.recipe.model.RecipeBook}.
  */
-public interface AddressBookStorage {
+public interface RecipeBookStorage {
 
     /**
      * Returns the file path of the data file.
      */
-    Path getAddressBookFilePath();
+    Path getRecipeBookFilePath();
 
     /**
-     * Returns AddressBook data as a {@link ReadOnlyAddressBook}.
+     * Returns RecipeBook data as a {@link ReadOnlyRecipeBook}.
      *   Returns {@code Optional.empty()} if storage file is not found.
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
-    Optional<ReadOnlyAddressBook> readAddressBook() throws DataConversionException, IOException;
+    Optional<ReadOnlyRecipeBook> readRecipeBook() throws DataConversionException, IOException;
 
     /**
-     * @see #getAddressBookFilePath()
+     * @see #getRecipeBookFilePath()
      */
-    Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataConversionException, IOException;
+    Optional<ReadOnlyRecipeBook> readRecipeBook(Path filePath) throws DataConversionException, IOException;
 
     /**
-     * Saves the given {@link ReadOnlyAddressBook} to the storage.
-     * @param addressBook cannot be null.
+     * Saves the given {@link ReadOnlyRecipeBook} to the storage.
+     * @param recipeBook cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException;
+    void saveRecipeBook(ReadOnlyRecipeBook recipeBook) throws IOException;
 
     /**
-     * @see #saveAddressBook(ReadOnlyAddressBook)
+     * @see #saveRecipeBook(ReadOnlyRecipeBook)
      */
-    void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException;
+    void saveRecipeBook(ReadOnlyRecipeBook recipeBook, Path filePath) throws IOException;
 
 }

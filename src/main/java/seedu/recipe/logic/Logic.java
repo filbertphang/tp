@@ -7,7 +7,7 @@ import seedu.recipe.commons.core.GuiSettings;
 import seedu.recipe.logic.commands.CommandResult;
 import seedu.recipe.logic.commands.exceptions.CommandException;
 import seedu.recipe.logic.parser.exceptions.ParseException;
-import seedu.recipe.model.ReadOnlyAddressBook;
+import seedu.recipe.model.ReadOnlyRecipeBook;
 import seedu.recipe.model.recipe.Recipe;
 
 /**
@@ -24,11 +24,11 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the AddressBook.
+     * Returns the RecipeBook.
      *
-     * @see seedu.recipe.model.Model#getAddressBook()
+     * @see seedu.recipe.model.Model#getRecipeBook()
      */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyRecipeBook getRecipeBook();
 
     /** Returns an unmodifiable view of the filtered list of recipes */
     ObservableList<Recipe> getFilteredRecipeList();
@@ -36,7 +36,7 @@ public interface Logic {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getRecipeBookFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

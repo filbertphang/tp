@@ -1,34 +1,34 @@
 package seedu.recipe.testutil;
 
-import seedu.recipe.model.AddressBook;
+import seedu.recipe.model.RecipeBook;
 import seedu.recipe.model.recipe.Recipe;
 
 /**
  * A utility class to help with building Addressbook objects.
  * Example usage: <br>
- *     {@code AddressBook ab = new AddressBookBuilder().withPerson("John", "Doe").build();}
+ *     {@code RecipeBook ab = new RecipeBookBuilder().withRecipe("John", "Doe").build();}
  */
-public class AddressBookBuilder {
+public class RecipeBookBuilder {
 
-    private AddressBook addressBook;
+    private RecipeBook recipeBook;
 
-    public AddressBookBuilder() {
-        addressBook = new AddressBook();
+    public RecipeBookBuilder() {
+        recipeBook = new RecipeBook();
     }
 
-    public AddressBookBuilder(AddressBook addressBook) {
-        this.addressBook = addressBook;
+    public RecipeBookBuilder(RecipeBook recipeBook) {
+        this.recipeBook = recipeBook;
     }
 
     /**
-     * Adds a new {@code Recipe} to the {@code AddressBook} that we are building.
+     * Adds a new {@code Recipe} to the {@code RecipeBook} that we are building.
      */
-    public AddressBookBuilder withPerson(Recipe recipe) {
-        addressBook.addRecipe(recipe);
+    public RecipeBookBuilder withRecipe(Recipe recipe) {
+        recipeBook.addRecipe(recipe);
         return this;
     }
 
-    public AddressBook build() {
-        return addressBook;
+    public RecipeBook build() {
+        return recipeBook;
     }
 }

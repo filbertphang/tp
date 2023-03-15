@@ -3,10 +3,10 @@ package seedu.recipe.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static seedu.recipe.testutil.Assert.assertThrows;
-import static seedu.recipe.testutil.TypicalPersons.ALICE;
-import static seedu.recipe.testutil.TypicalPersons.HOON;
-import static seedu.recipe.testutil.TypicalPersons.IDA;
-import static seedu.recipe.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.recipe.testutil.TypicalRecipes.ALICE;
+import static seedu.recipe.testutil.TypicalRecipes.HOON;
+import static seedu.recipe.testutil.TypicalRecipes.IDA;
+import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipeBook;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,22 +16,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.recipe.commons.exceptions.DataConversionException;
-import seedu.recipe.model.AddressBook;
-import seedu.recipe.model.ReadOnlyAddressBook;
+import seedu.recipe.model.RecipeBook;
+import seedu.recipe.model.ReadOnlyRecipeBook;
 
-public class JsonAddressBookStorageTest {
-    private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonAddressBookStorageTest");
+public class JsonRecipeBookStorageTest {
+    private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonRecipeBookStorageTest");
 
     @TempDir
     public Path testFolder;
 
     @Test
-    public void readAddressBook_nullFilePath_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> readAddressBook(null));
+    public void readRecipeBook_nullFilePath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> readRecipeBook(null));
     }
 
-    private java.util.Optional<ReadOnlyAddressBook> readAddressBook(String filePath) throws Exception {
-        return new JsonAddressBookStorage(Paths.get(filePath)).readAddressBook(addToTestDataPathIfNotNull(filePath));
+    private java.util.Optional<ReadOnlyRecipeBook> readRecipeBook(String filePath) throws Exception {
+        return new JsonRecipeBookStorage(Paths.get(filePath)).readRecipeBook(addToTestDataPathIfNotNull(filePath));
     }
 
     private Path addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
@@ -42,69 +42,69 @@ public class JsonAddressBookStorageTest {
 
     @Test
     public void read_missingFile_emptyResult() throws Exception {
-        assertFalse(readAddressBook("NonExistentFile.json").isPresent());
+        assertFalse(readRecipeBook("NonExistentFile.json").isPresent());
     }
 
     @Test
     public void read_notJsonFormat_exceptionThrown() {
-        assertThrows(DataConversionException.class, () -> readAddressBook("notJsonFormatAddressBook.json"));
+        assertThrows(DataConversionException.class, () -> readRecipeBook("notJsonFormatRecipeBook.json"));
     }
 
     @Test
-    public void readAddressBook_invalidPersonAddressBook_throwDataConversionException() {
-        assertThrows(DataConversionException.class, () -> readAddressBook("invalidPersonAddressBook.json"));
+    public void readRecipeBook_invalidRecipeRecipeBook_throwDataConversionException() {
+        assertThrows(DataConversionException.class, () -> readRecipeBook("invalidRecipeRecipeBook.json"));
     }
 
     @Test
-    public void readAddressBook_invalidAndValidPersonAddressBook_throwDataConversionException() {
-        assertThrows(DataConversionException.class, () -> readAddressBook("invalidAndValidPersonAddressBook.json"));
+    public void readRecipeBook_invalidAndValidRecipeRecipeBook_throwDataConversionException() {
+        assertThrows(DataConversionException.class, () -> readRecipeBook("invalidAndValidRecipeRecipeBook.json"));
     }
 
     @Test
-    public void readAndSaveAddressBook_allInOrder_success() throws Exception {
-        Path filePath = testFolder.resolve("TempAddressBook.json");
-        AddressBook original = getTypicalAddressBook();
-        JsonAddressBookStorage jsonAddressBookStorage = new JsonAddressBookStorage(filePath);
+    public void readAndSaveRecipeBook_allInOrder_success() throws Exception {
+        Path filePath = testFolder.resolve("TempRecipeBook.json");
+        RecipeBook original = getTypicalRecipeBook();
+        JsonRecipeBookStorage jsonRecipeBookStorage = new JsonRecipeBookStorage(filePath);
 
         // Save in new file and read back
-        jsonAddressBookStorage.saveAddressBook(original, filePath);
-        ReadOnlyAddressBook readBack = jsonAddressBookStorage.readAddressBook(filePath).get();
-        assertEquals(original, new AddressBook(readBack));
+        jsonRecipeBookStorage.saveRecipeBook(original, filePath);
+        ReadOnlyRecipeBook readBack = jsonRecipeBookStorage.readRecipeBook(filePath).get();
+        assertEquals(original, new RecipeBook(readBack));
 
         // Modify data, overwrite exiting file, and read back
         original.addRecipe(HOON);
         original.removeRecipe(ALICE);
-        jsonAddressBookStorage.saveAddressBook(original, filePath);
-        readBack = jsonAddressBookStorage.readAddressBook(filePath).get();
-        assertEquals(original, new AddressBook(readBack));
+        jsonRecipeBookStorage.saveRecipeBook(original, filePath);
+        readBack = jsonRecipeBookStorage.readRecipeBook(filePath).get();
+        assertEquals(original, new RecipeBook(readBack));
 
         // Save and read without specifying file path
         original.addRecipe(IDA);
-        jsonAddressBookStorage.saveAddressBook(original); // file path not specified
-        readBack = jsonAddressBookStorage.readAddressBook().get(); // file path not specified
-        assertEquals(original, new AddressBook(readBack));
+        jsonRecipeBookStorage.saveRecipeBook(original); // file path not specified
+        readBack = jsonRecipeBookStorage.readRecipeBook().get(); // file path not specified
+        assertEquals(original, new RecipeBook(readBack));
 
     }
 
     @Test
-    public void saveAddressBook_nullAddressBook_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> saveAddressBook(null, "SomeFile.json"));
+    public void saveRecipeBook_nullRecipeBook_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> saveRecipeBook(null, "SomeFile.json"));
     }
 
     /**
-     * Saves {@code addressBook} at the specified {@code filePath}.
+     * Saves {@code recipeBook} at the specified {@code filePath}.
      */
-    private void saveAddressBook(ReadOnlyAddressBook addressBook, String filePath) {
+    private void saveRecipeBook(ReadOnlyRecipeBook recipeBook, String filePath) {
         try {
-            new JsonAddressBookStorage(Paths.get(filePath))
-                    .saveAddressBook(addressBook, addToTestDataPathIfNotNull(filePath));
+            new JsonRecipeBookStorage(Paths.get(filePath))
+                    .saveRecipeBook(recipeBook, addToTestDataPathIfNotNull(filePath));
         } catch (IOException ioe) {
             throw new AssertionError("There should not be an error writing to the file.", ioe);
         }
     }
 
     @Test
-    public void saveAddressBook_nullFilePath_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> saveAddressBook(new AddressBook(), null));
+    public void saveRecipeBook_nullFilePath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> saveRecipeBook(new RecipeBook(), null));
     }
 }

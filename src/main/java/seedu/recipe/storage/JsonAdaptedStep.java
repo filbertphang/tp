@@ -1,14 +1,20 @@
 package seedu.recipe.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.Step;
+import seedu.recipe.model.tag.Tag;
+
+import java.util.Optional;
 
 /**
  * Jackson-friendly version of {@link Step}.
  */
+@JsonInclude(Include.NON_NULL)
 class JsonAdaptedStep {
 
     private final String stepName;
@@ -43,4 +49,13 @@ class JsonAdaptedStep {
         return new Step(stepName);
     }
 
+    public Optional<Step> toModelTypeOptional() {
+        try {
+            Step out = this.toModelType();
+            return Optional.ofNullable(out);
+        } catch (IllegalValueException e) {
+            //log
+            return Optional.empty();
+        }
+    }
 }

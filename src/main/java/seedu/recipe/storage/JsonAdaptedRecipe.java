@@ -1,28 +1,20 @@
 package seedu.recipe.storage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.Ingredient;
-import seedu.recipe.model.recipe.Name;
 import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.model.recipe.RecipeDuration;
 import seedu.recipe.model.recipe.RecipePortion;
 import seedu.recipe.model.recipe.Step;
-
-import seedu.recipe.model.recipe.unit.PortionUnit;
-
 import seedu.recipe.model.tag.Tag;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Jackson-friendly version of {@link Recipe}.
@@ -39,7 +31,7 @@ class JsonAdaptedRecipe {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Recipe's %s field is missing!";
 
     @JsonProperty("name")
-    private final Name name;
+    private final JsonAdaptedName name;
 
     @JsonProperty("portion")
     private final RecipePortion portion;
@@ -61,7 +53,7 @@ class JsonAdaptedRecipe {
      */
     @JsonCreator
     public JsonAdaptedRecipe(
-            @JsonProperty("name") Name name,
+            @JsonProperty("name") JsonAdaptedName name,
             @JsonProperty("portion") RecipePortion portion,
             @JsonProperty("duration") RecipeDuration duration,
             @JsonProperty("tags") List<JsonAdaptedTag> tags,
@@ -88,7 +80,7 @@ class JsonAdaptedRecipe {
      * Converts a given {@code Recipe} into this class for Jackson use.
      */
     public JsonAdaptedRecipe(Recipe source) {
-        name = source.getName();
+        name = new JsonAdaptedName(source.getName());
         portion = source.getPortionNullable();
         duration = source.getDurationNullable();
 
@@ -125,7 +117,7 @@ class JsonAdaptedRecipe {
 //        final Name modelName = new Name(name);
 
 
-        Recipe res = new Recipe(name);
+        Recipe res = new Recipe(name.toModelType());
         //Setter methods/overloaded constructor
         if (portion != null) {
             res.setPortion(portion);

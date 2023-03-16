@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,14 +28,13 @@ import seedu.recipe.model.tag.Tag;
  * Jackson-friendly version of {@link Recipe}.
  */
 class JsonAdaptedRecipe {
-
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Recipe's %s field is missing!";
-    private String name;
-    private String portion;
-    private String duration;
-    private String tags;
-    private String ingredients;
-    private String steps;
+    private final String name;
+    private final RecipePortion portion;
+    private final RecipeDuration duration;
+    private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedIngredient> ingredients = new ArrayList<>();
+    private final List<JsonAdaptedStep> steps = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedRecipe} with the given recipe details.
@@ -42,17 +42,26 @@ class JsonAdaptedRecipe {
     @JsonCreator
     public JsonAdaptedRecipe(
             @JsonProperty("name") Name name,
-            @JsonProperty("portion") Optional<RecipePortion> portion,
-            @JsonProperty("duration") Optional<RecipeDuration> duration,
-            @JsonProperty("tags") Optional<Set<Tag>> tags,
-            @JsonProperty("ingredient") Optional<List<Ingredient>> ingredients,
-            @JsonProperty("steps") Optional<List<Step>> steps) {
+            @JsonProperty("portion") RecipePortion portion,
+            @JsonProperty("duration") RecipeDuration duration,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("ingredient") List<JsonAdaptedIngredient> ingredients,
+            @JsonProperty("steps") List<JsonAdaptedStep> steps) {
         this.name = name.toString();
-        this.portion = portion.toString();
-        this.duration = duration.toString();
-        this.ingredients = ingredients.toString();
-        this.tags = tags.toString();
-        this.steps = steps.toString();
+        this.portion = portion;
+        this.duration = duration;
+
+        if (tags != null) {
+            this.tags.addAll(tags);
+        };
+
+        if (ingredients != null) {
+            this.ingredients.addAll(ingredients);
+        }
+
+        if (steps != null) {
+            this.steps.addAll(steps);
+        }
     }
 
     /**
@@ -60,11 +69,24 @@ class JsonAdaptedRecipe {
      */
     public JsonAdaptedRecipe(Recipe source) {
         name = source.getName().toString();
-        portion = source.getPortion().toString();
-        duration = source.getDuration().toString();
-        ingredients = source.getIngredients().toString();
-        tags = source.getTags().toString();
-        steps = source.getSteps().toString();
+        portion = source.getPortion();
+        duration = source.getDuration();
+
+        tags.addAll(
+                source.getTags().stream()
+                    .map(JsonAdaptedTag::new)
+                    .collect(Collectors.toList())
+        );
+        ingredients.addAll(
+                source.getIngredients().stream()
+                        .map(JsonAdaptedIngredient::new)
+                        .collect(Collectors.toList())
+        );
+        steps.addAll(
+                source.getSteps().stream()
+                        .map(JsonAdaptedStep::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     /**

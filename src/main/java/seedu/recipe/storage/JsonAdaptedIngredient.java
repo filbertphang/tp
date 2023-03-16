@@ -25,8 +25,8 @@ class JsonAdaptedIngredient {
     /**
      * Converts a given {@code Ingredient} into this class for Jackson use.
      */
-    public JsonAdaptedIngredient(RecipeIngredient source) {
-        ingredientName = source.getName();
+    public JsonAdaptedIngredient(Ingredient source) {
+        ingredientName = source.name;
     }
 
     @JsonValue

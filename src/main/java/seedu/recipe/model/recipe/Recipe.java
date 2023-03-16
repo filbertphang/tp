@@ -66,7 +66,7 @@ public class Recipe {
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+        return tags;
     }
 
     public List<Step> getSteps() {
@@ -82,7 +82,9 @@ public class Recipe {
     }
 
     public void setTags(Tag... tags) {
-        this.tags.addAll(Set.of(tags));
+        for (Tag tag: tags) {
+            this.tags.add(tag);
+        }
     }
 
     public void setIngredients(Ingredient... ingredients) {

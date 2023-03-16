@@ -34,7 +34,7 @@ public class RecipePortion {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(lowerRange).append("-").append(upperRange).append(" ").append(portionUnit);
+        sb.append(lowerRange).append("-").append(upperRange).append(" ").append(portionUnit.toString());
         return sb.toString();
     }
 

@@ -12,6 +12,7 @@ import seedu.recipe.commons.exceptions.DataConversionException;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.commons.util.FileUtil;
 import seedu.recipe.commons.util.JsonUtil;
+import seedu.recipe.logic.parser.functional.TryUtil;
 import seedu.recipe.model.ReadOnlyRecipeBook;
 
 /**
@@ -53,9 +54,9 @@ public class JsonRecipeBookStorage implements RecipeBookStorage {
 
         try {
             return Optional.of(jsonRecipeBook.get().toModelType());
-        } catch (IllegalValueException ive) {
-            logger.info("Illegal values found in " + filePath + ": " + ive.getMessage());
-            throw new DataConversionException(ive);
+        } catch (IllegalValueException e) {
+            logger.info("Illegal values found in " + filePath + ": " + e.getMessage());
+            throw new DataConversionException(e);
         }
     }
 

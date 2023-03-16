@@ -10,8 +10,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.recipe.commons.exceptions.IllegalValueException;
-import seedu.recipe.model.recipe.*;
-import seedu.recipe.model.recipe.unit.*;
+import seedu.recipe.model.recipe.Ingredient;
+import seedu.recipe.model.recipe.Name;
+import seedu.recipe.model.recipe.Recipe;
+import seedu.recipe.model.recipe.RecipeDuration;
+import seedu.recipe.model.recipe.RecipeIngredient;
+import seedu.recipe.model.recipe.RecipePortion;
+import seedu.recipe.model.recipe.Step;
+
+import seedu.recipe.model.recipe.unit.IngredientAmountUnit;
+import seedu.recipe.model.recipe.unit.PortionUnit;
+
 import seedu.recipe.model.tag.Tag;
 
 /**

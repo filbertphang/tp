@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.Ingredient;
 import seedu.recipe.model.recipe.Recipe;
-import seedu.recipe.model.recipe.RecipeDuration;
 import seedu.recipe.model.recipe.Step;
 import seedu.recipe.model.tag.Tag;
 
@@ -36,7 +35,7 @@ class JsonAdaptedRecipe {
     private final Optional<JsonAdaptedRecipePortion> portion;
 
     @JsonProperty("duration")
-    private final RecipeDuration duration;
+    private final Optional<JsonAdaptedRecipeDuration> duration;
 
     @JsonProperty("tags")
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
@@ -54,7 +53,7 @@ class JsonAdaptedRecipe {
     public JsonAdaptedRecipe(
             @JsonProperty("name") JsonAdaptedName name,
             @JsonProperty("portion") Optional<JsonAdaptedRecipePortion> portion,
-            @JsonProperty("duration") RecipeDuration duration,
+            @JsonProperty("duration") Optional<JsonAdaptedRecipeDuration> duration,
             @JsonProperty("tags") List<JsonAdaptedTag> tags,
             @JsonProperty("ingredient") List<JsonAdaptedIngredient> ingredients,
             @JsonProperty("steps") List<JsonAdaptedStep> steps) {
@@ -64,7 +63,7 @@ class JsonAdaptedRecipe {
 
         if (tags != null) {
             this.tags.addAll(tags);
-        };
+        }
 
         if (ingredients != null) {
             this.ingredients.addAll(ingredients);
@@ -81,28 +80,28 @@ class JsonAdaptedRecipe {
     public JsonAdaptedRecipe(Recipe source) {
         name = new JsonAdaptedName(source.getName());
         portion = Optional.ofNullable(source.getPortionNullable()).map(JsonAdaptedRecipePortion::new);
-        duration = source.getDurationNullable();
+        duration = Optional.ofNullable(source.getDurationNullable()).map(JsonAdaptedRecipeDuration::new);
 
         tags.addAll(
                 source.getTags().stream()
-                    .map(JsonAdaptedTag::new)
-                    .collect(Collectors.toList())
-        );
+                        .map(JsonAdaptedTag::new)
+                        .collect(Collectors.toList())
+                   );
         ingredients.addAll(
                 source.getIngredients().stream()
                         .map(JsonAdaptedIngredient::new)
                         .collect(Collectors.toList())
-        );
+                          );
         steps.addAll(
                 source.getSteps().stream()
                         .map(JsonAdaptedStep::new)
                         .collect(Collectors.toList())
-        );
+                    );
     }
 
     /**
      * Converts this Jackson-friendly adapted recipe object into the model's {@code Recipe} object.
-     * Remember only name field is required, and the rest are optional. 
+     * Remember only name field is required, and the rest are optional.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted recipe.
      */
@@ -118,12 +117,9 @@ class JsonAdaptedRecipe {
 
         Recipe res = new Recipe(name.toModelType());
 
-        // set portion
+        // set portion and duration
         res.setPortion(portion.flatMap(JsonAdaptedRecipePortion::toModelTypeOptional).orElse(null));
-
-        if (duration != null) {
-            res.setDuration(duration);
-        }
+        res.setDuration(duration.flatMap(JsonAdaptedRecipeDuration::toModelTypeOptional).orElse(null));
 
         List<Optional<Tag>> outTags = tags.stream()
                 .map(JsonAdaptedTag::toModelTypeOptional)

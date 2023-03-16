@@ -1,10 +1,10 @@
 package seedu.recipe.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.Name;
 
@@ -33,7 +33,7 @@ class JsonAdaptedName {
         name = source.toString();
     }
 
-    @JsonValue
+    @JsonGetter("recipeName")
     public String getName() {
         return name;
     }

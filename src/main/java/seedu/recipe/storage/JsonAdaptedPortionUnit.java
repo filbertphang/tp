@@ -1,10 +1,9 @@
 package seedu.recipe.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.unit.PortionUnit;
 
@@ -22,7 +21,7 @@ class JsonAdaptedPortionUnit {
      * Constructs a {@code JsonAdaptedPortionUnit} with the given {@code PortionUnitPortionUnit}.
      */
     @JsonCreator
-    public JsonAdaptedPortionUnit(@JsonProperty("unit") String unit) {
+    public JsonAdaptedPortionUnit(String unit) {
         this.unit = unit;
     }
 
@@ -33,7 +32,7 @@ class JsonAdaptedPortionUnit {
         unit = source.getUnit();
     }
 
-    @JsonGetter("unit")
+    @JsonValue
     public String getUnit() {
         return unit;
     }

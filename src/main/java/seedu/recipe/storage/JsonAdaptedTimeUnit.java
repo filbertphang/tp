@@ -1,10 +1,9 @@
 package seedu.recipe.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.unit.TimeUnit;
 
@@ -22,7 +21,7 @@ class JsonAdaptedTimeUnit {
      * Constructs a {@code JsonAdaptedTimeUnit} with the given {@code TimeUnitTimeUnit}.
      */
     @JsonCreator
-    public JsonAdaptedTimeUnit(@JsonProperty("unit") String unit) {
+    public JsonAdaptedTimeUnit(String unit) {
         this.unit = unit;
     }
 
@@ -33,7 +32,7 @@ class JsonAdaptedTimeUnit {
         unit = source.getUnit();
     }
 
-    @JsonGetter("unit")
+    @JsonValue
     public String getUnit() {
         return unit;
     }

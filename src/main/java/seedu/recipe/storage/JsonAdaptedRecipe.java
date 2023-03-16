@@ -31,9 +31,13 @@ class JsonAdaptedRecipe {
      * Constructs a {@code JsonAdaptedRecipe} with the given recipe details.
      */
     @JsonCreator
-    public JsonAdaptedRecipe(@JsonProperty("name") Name name, @JsonProperty("portion") Optional<RecipePortion> portion,
-            @JsonProperty("duration") Optional<RecipeDuration> duration, @JsonProperty("ingredient") Optional<List<Ingredient>> ingredients,
-            @JsonProperty("tags") Optional<Set<Tag>> tags, @JsonProperty("steps") Optional<List<Step>> steps) {
+    public JsonAdaptedRecipe(
+            @JsonProperty("name") Name name,
+            @JsonProperty("portion") Optional<RecipePortion> portion,
+            @JsonProperty("duration") Optional<RecipeDuration> duration,
+            @JsonProperty("tags") Optional<Set<Tag>> tags,
+            @JsonProperty("ingredient") Optional<List<Ingredient>> ingredients,
+            @JsonProperty("steps") Optional<List<Step>> steps) {
         this.name = name.toString();
         this.portion = portion.toString();
         this.duration = duration.toString();
@@ -74,13 +78,17 @@ class JsonAdaptedRecipe {
         int lowerRange = Integer.parseInt(parameters[0]);
         int upperRange = Integer.parseInt(parameters[1]);
         PortionUnit portionUnit = new PortionUnit(parameters[2]);
-        final Optional<RecipePortion> optionalModelPortion = Optional.of(new RecipePortion(lowerRange, upperRange, portionUnit));
+        final Optional<RecipePortion> optionalModelPortion = Optional.of(
+                new RecipePortion(lowerRange, upperRange, portionUnit)
+        );
 
         // Example RecipeDuration input is "15 m"
-        parameters = duration.split(" ");
-        double time = Double.parseDouble(parameters[0]);
-        TimeUnit timeUnit = new TimeUnit(parameters[1]);        
-        final Optional<RecipeDuration> optionalModelDuration = Optional.of(new RecipeDuration(time, timeUnit));
+        // parameters = duration.split(" ");
+        // double time = Double.parseDouble(parameters[0]);
+        // TimeUnit timeUnit = new TimeUnit(parameters[1]);
+        final Optional<RecipeDuration> optionalModelDuration = Optional.of(
+                RecipeDuration.of(duration)
+        );
 
         // Example RecipeIngredient input is "2 potato" (minimum)
         // Example RecipeIngredient input is "5 tbsp pepper/salt" (maximum)
@@ -91,16 +99,16 @@ class JsonAdaptedRecipe {
             double ingredientAmount = Double.parseDouble(parameters[0]);
             IngredientAmountUnit ingredientUnit = new IngredientAmountUnit(parameters[1]);        
             String ingredientName = parameters[2];
-            try{
+            try {
                 HashSet<Ingredient> substitutions = new HashSet<>();
                 String[] substitutionsArray = parameters[3].split("[\\s+]");
                 for (String substitution : substitutionsArray) {
                     Ingredient newSubstitution = new Ingredient(substitution);
                     substitutions.add(newSubstitution);
                 }
-            }catch(ArrayIndexOutOfBoundsException e) {
+            } catch(ArrayIndexOutOfBoundsException e) {
                 System.out.println(e.getMessage());
-            }finally {
+            } finally {
                 RecipeIngredient newIngredient = new RecipeIngredient(ingredientName, ingredientAmount);
                 OutputIngredientList.add(newIngredient);
             }       

@@ -44,4 +44,14 @@ public class RecipeIngredient extends Ingredient {
     public int hashCode() {
         return Objects.hash(amount, unit, substitutions);
     }
+
+    // Example RecipeIngredient input is "2 potato" (minimum)
+    // Example RecipeIngredient input is "5 tbsp pepper/salt" (maximum)
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(amount).append(" ").append(unit).append(" ")
+        .append(name).append("/").append(substitutions.toString());
+        return sb.toString();
+    }
 }

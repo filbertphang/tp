@@ -10,10 +10,10 @@ import seedu.recipe.model.recipe.*;
 import seedu.recipe.model.tag.Tag;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code RecipeBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Recipe[] getSamplePersons() {
+    public static Recipe[] getSampleRecipes() {
         return new Recipe[] {
             new Recipe(new Name("Alex Yeoh"), new Ingredient("87438807"), new Email("alexyeoh@example.com"),
                 new Address("Blk 30 Geylang Street 29, #06-40"),
@@ -24,9 +24,9 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyRecipeBook getSampleAddressBook() {
+    public static ReadOnlyRecipeBook getSampleRecipeBook() {
         RecipeBook sampleAb = new RecipeBook();
-        for (Recipe sampleRecipe : getSamplePersons()) {
+        for (Recipe sampleRecipe : getSampleRecipes()) {
             sampleAb.addRecipe(sampleRecipe);
         }
         return sampleAb;

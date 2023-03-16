@@ -7,7 +7,6 @@ import seedu.recipe.commons.exceptions.IllegalValueException;
 import seedu.recipe.model.recipe.Ingredient;
 import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.model.recipe.RecipeDuration;
-import seedu.recipe.model.recipe.RecipePortion;
 import seedu.recipe.model.recipe.Step;
 import seedu.recipe.model.tag.Tag;
 
@@ -34,7 +33,7 @@ class JsonAdaptedRecipe {
     private final JsonAdaptedName name;
 
     @JsonProperty("portion")
-    private final RecipePortion portion;
+    private final Optional<JsonAdaptedRecipePortion> portion;
 
     @JsonProperty("duration")
     private final RecipeDuration duration;
@@ -54,7 +53,7 @@ class JsonAdaptedRecipe {
     @JsonCreator
     public JsonAdaptedRecipe(
             @JsonProperty("name") JsonAdaptedName name,
-            @JsonProperty("portion") RecipePortion portion,
+            @JsonProperty("portion") Optional<JsonAdaptedRecipePortion> portion,
             @JsonProperty("duration") RecipeDuration duration,
             @JsonProperty("tags") List<JsonAdaptedTag> tags,
             @JsonProperty("ingredient") List<JsonAdaptedIngredient> ingredients,
@@ -81,7 +80,7 @@ class JsonAdaptedRecipe {
      */
     public JsonAdaptedRecipe(Recipe source) {
         name = new JsonAdaptedName(source.getName());
-        portion = source.getPortionNullable();
+        portion = Optional.ofNullable(source.getPortionNullable()).map(JsonAdaptedRecipePortion::new);
         duration = source.getDurationNullable();
 
         tags.addAll(
@@ -118,10 +117,9 @@ class JsonAdaptedRecipe {
 
 
         Recipe res = new Recipe(name.toModelType());
-        //Setter methods/overloaded constructor
-        if (portion != null) {
-            res.setPortion(portion);
-        }
+
+        // set portion
+        res.setPortion(portion.flatMap(JsonAdaptedRecipePortion::toModelTypeOptional).orElse(null));
 
         if (duration != null) {
             res.setDuration(duration);

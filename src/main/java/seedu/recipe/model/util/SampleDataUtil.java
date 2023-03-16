@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import seedu.recipe.model.RecipeBook;
 import seedu.recipe.model.ReadOnlyRecipeBook;
 import seedu.recipe.model.recipe.*;
+import seedu.recipe.model.recipe.unit.TimeUnit;
 import seedu.recipe.model.tag.Tag;
 
 /**
@@ -14,13 +15,23 @@ import seedu.recipe.model.tag.Tag;
  */
 public class SampleDataUtil {
     public static Recipe[] getSampleRecipes() {
+        Recipe cacioEPepePasta = new Recipe(new Name("Cacio E Pepe Pasta"));
+        cacioEPepePasta.setDuration(RecipeDuration.of("15 minutes"));
+        cacioEPepePasta.setPortion(RecipePortion.of("1 person"));
+        cacioEPepePasta.setTags(
+                new Tag("Italian")
+        );
+        cacioEPepePasta.setIngredients(
+                new Ingredient("2 whole eggs"),
+                new Ingredient("100g spaghetti noodles")
+        );
+        cacioEPepePasta.setSteps(
+                new Step("Crack the egg and separate the yolks and whites"),
+                new Step("Raise a pot of water to the boil and add the spaghetti")
+        );
+
         return new Recipe[] {
-            new Recipe(new Name("Alex Yeoh"), new Ingredient("87438807"), new Email("alexyeoh@example.com"),
-                new Address("Blk 30 Geylang Street 29, #06-40"),
-                getTagSet("friends"), new Step("HELLO")),
-            new Recipe(new Name("Bernice Yu"), new Ingredient("99272758"), new Email("berniceyu@example.com"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getTagSet("colleagues", "friends"), new Step("Goodbye")),
+                cacioEPepePasta
         };
     }
 

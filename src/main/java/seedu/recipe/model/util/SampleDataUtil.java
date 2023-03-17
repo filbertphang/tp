@@ -43,36 +43,30 @@ public class SampleDataUtil {
         sample2.setIngredients(new Ingredient("Chicken Breast"),
                                new Ingredient("Balsamic Vinegar"),
                                new Ingredient("Honey"));
-        sample2.setSteps(
-                new Step("Preheat oven to 375 F."),
-                new Step("In a small bowl, mix together balsamic vinegar and honey."),
-                new Step("Arrange chicken breasts in a baking dish and pour the balsamic vinegar over them."),
-                new Step("Bake for 25-30 minutes, until the chicken is cooked through " +
-                                 "and the glaze is thick and bubbly."),
-                new Step("Serve hot.)"
-                ));
+        sample2.setSteps(new Step("Preheat oven to 375 F."),
+                         new Step("In a small bowl, mix together balsamic vinegar and honey."),
+                         new Step("Arrange chicken breasts in a baking dish and pour the balsamic vinegar over them."),
+                         new Step("Bake for 25-30 minutes, until the chicken is cooked through " +
+                                          "and the glaze is thick and bubbly."),
+                         new Step("Serve hot.)"));
 
         Recipe sample3 = new Recipe(new Name("Cacio E Pepe Pasta"));
         sample3.setDuration(RecipeDuration.of("15 minutes"));
         sample3.setPortion(RecipePortion.of("1 - 3 person"));
-        sample3.setIngredients(
-                new Ingredient("2 whole eggs"),
-                new Ingredient("100g spaghetti noodles")
-                              );
-        sample3.setSteps(
-                new Step("Crack the egg and separate the yolks and whites"),
-                new Step("Raise a pot of water to the boil and add the spaghetti")
-                        );
+        sample3.setIngredients(new Ingredient("2 whole eggs"),
+                               new Ingredient("100g spaghetti noodles"));
+        sample3.setSteps(new Step("Crack the egg and separate the yolks and whites"),
+                         new Step("Raise a pot of water to the boil and add the spaghetti"));
 
         return new Recipe[]{sample1, sample2, sample3};
     }
 
     public static ReadOnlyRecipeBook getSampleRecipeBook() {
-        RecipeBook sampleAb = new RecipeBook();
+        RecipeBook sampleRb = new RecipeBook();
         for (Recipe sampleRecipe : getSampleRecipes()) {
-            sampleAb.addRecipe(sampleRecipe);
+            sampleRb.addRecipe(sampleRecipe);
         }
-        return sampleAb;
+        return sampleRb;
     }
 
     /**

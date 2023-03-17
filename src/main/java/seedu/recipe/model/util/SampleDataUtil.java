@@ -16,42 +16,54 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code RecipeBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Recipe[] getSamplePersons() {
+    public static Recipe[] getSampleRecipes() {
         Recipe sample1 = new Recipe(new Name("Chicken and Broccoli Stir-Fry"));
         sample1.setDuration(RecipeDuration.of("15 minutes"));
         sample1.setTags(createArrayFromItemNames(Tag::new, "Chinese", "Healthy"));
         sample1.setIngredients(createArrayFromItemNames(Ingredient::new, "Chicken Breast", "Broccoli", "Soy Sauce",
-                "Vegetable Oil", "Garlic", "Bell Pepper"));
+                                                        "Vegetable Oil", "Garlic", "Bell Pepper"));
         sample1.setSteps(createArrayFromItemNames(Step::new, "1 In a small bowl, mix soy sauce and crushed garlic.",
-                "2 In a wok, heat vegetable oil over high heat.",
-                "3 Add chicken and stir-fry for 2-3 minutes, until browned.",
-                "4 Add broccoli and stir-fry for another 2-3 minutes.",
-                "5 Pour the sauce over the chicken and vegetables and stir-fry for another 2-3 minutes, until the sauce thickens and coats everything evenly.",
-                "6 Serve."
-        ));
+                                                  "2 In a wok, heat vegetable oil over high heat.",
+                                                  "3 Add chicken and stir-fry for 2-3 minutes, until browned.",
+                                                  "4 Add broccoli and stir-fry for another 2-3 minutes.",
+                                                  "5 Pour the sauce over the chicken and vegetables and stir-fry for another 2-3 minutes, until the sauce thickens and coats everything evenly.",
+                                                  "6 Serve."
+                                                 ));
 
         Recipe sample2 = new Recipe(new Name("Balsamic Glazed Chicken"));
         sample1.setPortion(RecipePortion.of("1 - 2 Portions"));
         sample1.setDuration(RecipeDuration.of("40 minutes"));
         sample1.setTags(createArrayFromItemNames(Tag::new, "Gluten-free", "Healthy"));
         sample1.setIngredients(createArrayFromItemNames(Ingredient::new, "Chicken Breast", "Balsamic Vinegar",
-                "Honey"));
+                                                        "Honey"));
         sample1.setSteps(createArrayFromItemNames(Step::new, "1 Preheat oven to 375 F.",
-                "2 In a small bowl, mix together balsamic vinegar and honey.",
-                "3 Arrange chicken breasts in a baking dish and pour the balsamic vinegar over them.",
-                "4 Bake for 25-30 minutes, until the chicken is cooked through and the glaze is thick and bubbly.",
-                "5 Serve hot."
-        ));
+                                                  "2 In a small bowl, mix together balsamic vinegar and honey.",
+                                                  "3 Arrange chicken breasts in a baking dish and pour the balsamic vinegar over them.",
+                                                  "4 Bake for 25-30 minutes, until the chicken is cooked through and the glaze is thick and bubbly.",
+                                                  "5 Serve hot."
+                                                 ));
 
-        return new Recipe[]{ sample1, sample2 };
+        Recipe sample3 = new Recipe(new Name("Cacio E Pepe Pasta"));
+        sample3.setDuration(RecipeDuration.of("15 minutes"));
+        sample3.setPortion(RecipePortion.of("1 - 3 person"));
+        sample3.setIngredients(
+                new Ingredient("2 whole eggs"),
+                new Ingredient("100g spaghetti noodles")
+                              );
+        sample3.setSteps(
+                new Step("Crack the egg and separate the yolks and whites"),
+                new Step("Raise a pot of water to the boil and add the spaghetti")
+                        );
+
+        return new Recipe[]{sample1, sample2, sample3};
     }
 
-    public static ReadOnlyRecipeBook getSampleAddressBook() {
+    public static ReadOnlyRecipeBook getSampleRecipeBook() {
         RecipeBook sampleAb = new RecipeBook();
-        for (Recipe sampleRecipe : getSamplePersons()) {
+        for (Recipe sampleRecipe : getSampleRecipes()) {
             sampleAb.addRecipe(sampleRecipe);
         }
         return sampleAb;

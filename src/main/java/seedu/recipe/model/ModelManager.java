@@ -75,7 +75,7 @@ public class ModelManager implements Model {
         userPrefs.setRecipeBookFilePath(recipeBookFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== RecipeBook ================================================================================
 
     @Override
     public void setRecipeBook(ReadOnlyRecipeBook recipeBook) {
@@ -115,7 +115,7 @@ public class ModelManager implements Model {
 
     /**
      * Returns an unmodifiable view of the list of {@code Recipe} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedRecipeBook}
      */
     @Override
     public ObservableList<Recipe> getFilteredRecipeList() {

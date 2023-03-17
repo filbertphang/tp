@@ -12,9 +12,9 @@ import seedu.recipe.logic.commands.ListCommand;
 import seedu.recipe.logic.parser.exceptions.ParseException;
 import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
 import seedu.recipe.model.recipe.Recipe;
-import seedu.recipe.testutil.EditPersonDescriptorBuilder;
-import seedu.recipe.testutil.PersonBuilder;
-import seedu.recipe.testutil.PersonUtil;
+import seedu.recipe.testutil.EditRecipeDescriptorBuilder;
+import seedu.recipe.testutil.RecipeBuilder;
+import seedu.recipe.testutil.RecipeUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +33,8 @@ public class RecipeBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        Recipe recipe = new PersonBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(recipe));
+        Recipe recipe = new RecipeBuilder().build();
+        AddCommand command = (AddCommand) parser.parseCommand(RecipeUtil.getAddCommand(recipe));
         assertEquals(new AddCommand(recipe), command);
     }
 
@@ -53,10 +53,11 @@ public class RecipeBookParserTest {
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Recipe recipe = new PersonBuilder().build();
-        EditCommand.EditRecipeDescriptor descriptor = new EditPersonDescriptorBuilder(recipe).build();
+        Recipe recipe = new RecipeBuilder().build();
+        EditCommand.EditRecipeDescriptor descriptor = new EditRecipeDescriptorBuilder(recipe).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                                                                        + INDEX_FIRST_PERSON.getOneBased() + " " + RecipeUtil.getEditRecipeDescriptorDetails(
+                descriptor));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
@@ -89,7 +90,7 @@ public class RecipeBookParserTest {
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+                -> parser.parseCommand(""));
     }
 
     @Test

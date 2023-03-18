@@ -1,22 +1,28 @@
 package seedu.recipe.model;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.recipe.model.Model.PREDICATE_SHOW_ALL_RECIPE;
 import static seedu.recipe.testutil.Assert.assertThrows;
-import static seedu.recipe.testutil.TypicalRecipes.ALICE;
-import static seedu.recipe.testutil.TypicalRecipes.BENSON;
+import static seedu.recipe.testutil.TypicalRecipes.CACIO_E_PEPE;
+import static seedu.recipe.testutil.TypicalRecipes.FISH_AND_CHIPS;
+import static seedu.recipe.testutil.TypicalRecipes.MASALA_DOSA;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.ObservableList;
 import seedu.recipe.commons.core.GuiSettings;
 import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
-import seedu.recipe.testutil.RecipeBookBuilder;
+import seedu.recipe.model.recipe.Recipe;
+import seedu.recipe.model.recipe.exceptions.RecipeNotFoundException;
 
 public class ModelManagerTest {
 
@@ -77,16 +83,6 @@ public class ModelManagerTest {
         assertThrows(NullPointerException.class, () -> modelManager.hasRecipe(null));
     }
 
-    @Test
-    public void hasRecipe_recipeNotInRecipeBook_returnsFalse() {
-        assertFalse(modelManager.hasRecipe(ALICE));
-    }
-
-    @Test
-    public void hasRecipe_recipeInRecipeBook_returnsTrue() {
-        modelManager.addRecipe(ALICE);
-        assertTrue(modelManager.hasRecipe(ALICE));
-    }
 
     @Test
     public void getFilteredRecipeList_modifyList_throwsUnsupportedOperationException() {
@@ -95,31 +91,32 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        RecipeBook recipeBook = new RecipeBookBuilder().withRecipe(ALICE).withRecipe(BENSON).build();
+        RecipeBook recipeBook = new RecipeBook();
+        recipeBook.setRecipes(List.of(CACIO_E_PEPE, MASALA_DOSA));
         RecipeBook differentRecipeBook = new RecipeBook();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
         modelManager = new ModelManager(recipeBook, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(recipeBook, userPrefs);
-        assertTrue(modelManager.equals(modelManagerCopy));
+        assertEquals(modelManager, modelManagerCopy);
 
         // same object -> returns true
-        assertTrue(modelManager.equals(modelManager));
+        assertEquals(modelManager, modelManager);
 
         // null -> returns false
-        assertFalse(modelManager.equals(null));
+        assertNotEquals(null, modelManager);
 
         // different types -> returns false
-        assertFalse(modelManager.equals(5));
+        assertNotEquals(5, modelManager);
 
         // different recipeBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentRecipeBook, userPrefs)));
+        assertNotEquals(modelManager, new ModelManager(differentRecipeBook, userPrefs));
 
         // different filteredList -> returns false
-        String[] keywords = ALICE.getName().recipeName.split("\\s+");
+        String[] keywords = CACIO_E_PEPE.getName().recipeName.split("\\s+");
         modelManager.updateFilteredRecipeList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(recipeBook, userPrefs)));
+        assertNotEquals(modelManager, new ModelManager(recipeBook, userPrefs));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredRecipeList(PREDICATE_SHOW_ALL_RECIPE);
@@ -127,6 +124,57 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setRecipeBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(recipeBook, differentUserPrefs)));
+        assertNotEquals(modelManager, new ModelManager(recipeBook, differentUserPrefs));
+    }
+
+    @Test
+    public void addRecipe() {
+        //Test Redirection
+        assertThrows(NullPointerException.class, () -> modelManager.addRecipe(null));
+
+        ObservableList<Recipe> empty = modelManager.getFilteredRecipeList();
+        assertEquals(0, empty.size());
+
+        modelManager.addRecipe(CACIO_E_PEPE);
+        ObservableList<Recipe> o = modelManager.getFilteredRecipeList();
+        assertTrue(o.get(0).isSameRecipe(CACIO_E_PEPE));
+    }
+
+    @Test
+    public void hasRecipe() {
+        assertFalse(modelManager.hasRecipe(CACIO_E_PEPE));
+
+        modelManager.addRecipe(CACIO_E_PEPE);
+        assertTrue(modelManager.hasRecipe(CACIO_E_PEPE));
+    }
+
+    @Test
+    public void deleteRecipe() {
+        assertThrows(RecipeNotFoundException.class, () -> modelManager.deleteRecipe(CACIO_E_PEPE));
+
+        modelManager.addRecipe(CACIO_E_PEPE);
+        assertDoesNotThrow(() -> modelManager.deleteRecipe(CACIO_E_PEPE));
+    }
+
+    @Test
+    public void setRecipe() {
+        assertFalse(modelManager.hasRecipe(CACIO_E_PEPE));
+        assertThrows(RecipeNotFoundException.class, () -> modelManager.setRecipe(CACIO_E_PEPE, CACIO_E_PEPE));
+
+        modelManager.addRecipe(CACIO_E_PEPE);
+        assertDoesNotThrow(() -> modelManager.setRecipe(CACIO_E_PEPE, MASALA_DOSA));
+    }
+
+    @Test
+    public void setRecipeBook() {
+        RecipeBook newBook = new RecipeBook();
+        newBook.addRecipe(FISH_AND_CHIPS);
+
+        modelManager.addRecipe(MASALA_DOSA);
+        assertTrue(modelManager.hasRecipe(MASALA_DOSA));
+
+        modelManager.setRecipeBook(newBook);
+        assertFalse(modelManager.hasRecipe(MASALA_DOSA));
+        assertTrue(modelManager.hasRecipe(FISH_AND_CHIPS));
     }
 }

@@ -2,10 +2,11 @@ package seedu.recipe.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_DURATION;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_PORTION;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_STEP;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.recipe.testutil.Assert.assertThrows;
 
@@ -15,8 +16,8 @@ import java.util.List;
 
 import seedu.recipe.commons.core.index.Index;
 import seedu.recipe.logic.commands.exceptions.CommandException;
-import seedu.recipe.model.RecipeBook;
 import seedu.recipe.model.Model;
+import seedu.recipe.model.RecipeBook;
 import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
 import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.testutil.EditRecipeDescriptorBuilder;
@@ -25,48 +26,57 @@ import seedu.recipe.testutil.EditRecipeDescriptorBuilder;
  * Contains helper methods for testing commands.
  */
 public class CommandTestUtil {
+    public static final String VALID_NAME_CHICKEN = "Grilled Chicken";
+    public static final String VALID_NAME_FISH = "Grilled Fish";
+    public static final String VALID_PORTION_CHICKEN = "1 - 2 portions";
+    public static final String VALID_PORTION_FISH = "2 - 3 portions";
+    public static final String VALID_DURATION_CHICKEN = "1 hour";
+    public static final String VALID_DURATION_FISH = "15 minutes";
+    public static final String VALID_TAG_CHINESE = "Chinese";
+    public static final String VALID_TAG_ITALIAN = "Italian";
+    public static final String VALID_INGREDIENT_CHICKEN = "1 chicken breast";
+    public static final String VALID_INGREDIENT_FISH = "200g fish";
+    public static final String VALID_STEP_CHICKEN = "In a bowl, marinate the chicken in oyster sauce";
+    public static final String VALID_STEP_FISH = "On a chopping board, remove the skin of the fish";
 
-    public static final String VALID_NAME_AMY = "Amy Bee";
-    public static final String VALID_NAME_BOB = "Bob Choo";
-    public static final String VALID_PHONE_AMY = "11111111";
-    public static final String VALID_PHONE_BOB = "22222222";
-    public static final String VALID_EMAIL_AMY = "amy@example.com";
-    public static final String VALID_EMAIL_BOB = "bob@example.com";
-    public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
-    public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
-    public static final String VALID_TAG_HUSBAND = "husband";
-    public static final String VALID_TAG_FRIEND = "friend";
+    public static final String NAME_DESC_CHICKEN = " " + PREFIX_NAME + VALID_NAME_CHICKEN;
+    public static final String NAME_DESC_FISH = " " + PREFIX_NAME + VALID_NAME_FISH;
+    public static final String PORTION_DESC_CHICKEN = " " + PREFIX_PORTION + VALID_PORTION_CHICKEN;
+    public static final String PORTION_DESC_FISH = " " + PREFIX_PORTION + VALID_PORTION_FISH;
+    public static final String DURATION_DESC_CHICKEN = " " + PREFIX_DURATION + VALID_DURATION_CHICKEN;
+    public static final String DURATION_DESC_FISH = " " + PREFIX_DURATION + VALID_DURATION_FISH;
+    public static final String TAG_DESC_CHINESE = " " + PREFIX_TAG + VALID_TAG_CHINESE;
+    public static final String TAG_DESC_ITALIAN = " " + PREFIX_TAG + VALID_TAG_ITALIAN;
+    public static final String INGREDIENT_DESC_CHICKEN = " " + PREFIX_INGREDIENT + VALID_INGREDIENT_CHICKEN;
+    public static final String INGREDIENT_DESC_FISH = " " + PREFIX_INGREDIENT + VALID_INGREDIENT_FISH;
+    public static final String STEP_DESC_CHICKEN = " " + PREFIX_STEP + VALID_STEP_CHICKEN;
+    public static final String STEP_DESC_FISH = " " + PREFIX_STEP + VALID_STEP_FISH;
 
-    public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
-    public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
-    public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
-    public static final String PHONE_DESC_BOB = " " + PREFIX_PHONE + VALID_PHONE_BOB;
-    public static final String EMAIL_DESC_AMY = " " + PREFIX_EMAIL + VALID_EMAIL_AMY;
-    public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + VALID_EMAIL_BOB;
-    public static final String ADDRESS_DESC_AMY = " " + PREFIX_ADDRESS + VALID_ADDRESS_AMY;
-    public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
-    public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
-    public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "Chicken&"; // '&' not allowed in names
+    public static final String INVALID_PORTION_DESC = " " + PREFIX_PORTION + "1 person"; // missing upper limit
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
-    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
-    public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_DURATION_DESC = " " + PREFIX_DURATION + "10"; // missing units
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "Chinese*"; // '*' not allowed in tags
+
+    // number not allowed for ingredient
+    public static final String INVALID_INGREDIENT_DESC = " " + PREFIX_INGREDIENT + "2";
+    public static final String INVALID_STEP_DESC = " " + PREFIX_STEP + ""; // empty string not allowed for step
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
-    public static final EditCommand.EditRecipeDescriptor DESC_AMY;
-    public static final EditCommand.EditRecipeDescriptor DESC_BOB;
+    public static final EditCommand.EditRecipeDescriptor DESC_CHICKEN;
+    public static final EditCommand.EditRecipeDescriptor DESC_FISH;
 
     static {
-        DESC_AMY = new EditRecipeDescriptorBuilder().withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
-        DESC_BOB = new EditRecipeDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+        DESC_CHICKEN = new EditRecipeDescriptorBuilder().withName(VALID_NAME_CHICKEN)
+                .withPortion(VALID_PORTION_CHICKEN).withDuration(VALID_DURATION_CHICKEN)
+                .withTags(VALID_TAG_CHINESE).withIngredients(VALID_INGREDIENT_CHICKEN)
+                .withSteps(VALID_STEP_CHICKEN).build();
+        DESC_FISH = new EditRecipeDescriptorBuilder().withName(VALID_NAME_FISH)
+                .withPortion(VALID_PORTION_FISH).withDuration(VALID_DURATION_FISH)
+                .withTags(VALID_TAG_ITALIAN).withIngredients(VALID_INGREDIENT_FISH)
+                .withSteps(VALID_STEP_FISH).build();
     }
 
     /**

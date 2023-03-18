@@ -1,5 +1,21 @@
 package seedu.recipe.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_DURATION;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_PORTION;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_STEP;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.recipe.model.Model.PREDICATE_SHOW_ALL_RECIPE;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import seedu.recipe.commons.core.Messages;
 import seedu.recipe.commons.core.index.Index;
 import seedu.recipe.commons.util.CollectionUtil;
@@ -12,22 +28,6 @@ import seedu.recipe.model.recipe.RecipeDuration;
 import seedu.recipe.model.recipe.RecipePortion;
 import seedu.recipe.model.recipe.Step;
 import seedu.recipe.model.tag.Tag;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_DURATION;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_PORTION;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_STEP;
-import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.recipe.model.Model.PREDICATE_SHOW_ALL_RECIPE;
 
 /**
  * Edits the details of an existing recipe in the recipe book.
@@ -116,7 +116,10 @@ public class EditCommand extends Command {
         Tag[] updatedTags = editRecipeDescriptor.getTags().orElse(recipeToEdit.getTags()).toArray(Tag[]::new);
         newRecipe.setTags(updatedTags);
 
-        Ingredient[] updatedIngredients = editRecipeDescriptor.getIngredients().orElse(recipeToEdit.getIngredients()).toArray(Ingredient[]::new);
+        Ingredient[] updatedIngredients = editRecipeDescriptor
+                .getIngredients()
+                .orElse(recipeToEdit.getIngredients())
+                .toArray(Ingredient[]::new);
         newRecipe.setIngredients(updatedIngredients);
 
         Step[] updatedSteps = editRecipeDescriptor.getSteps().orElse(recipeToEdit.getSteps()).toArray(Step[]::new);

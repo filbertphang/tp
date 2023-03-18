@@ -1,5 +1,9 @@
 package seedu.recipe.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static seedu.recipe.testutil.Assert.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 import static seedu.recipe.testutil.Assert.assertThrows;
@@ -18,4 +22,12 @@ public class UserPrefsTest {
         assertThrows(NullPointerException.class, () -> userPrefs.setRecipeBookFilePath(null));
     }
 
+    @Test
+    public void equals() {
+        //Referential Equality
+        UserPrefs userPrefs = new UserPrefs();
+        assertEquals(userPrefs, userPrefs);
+        //Different type
+        assertNotEquals(userPrefs, "Hello");
+    }
 }

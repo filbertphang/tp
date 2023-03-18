@@ -1,9 +1,5 @@
 package seedu.recipe.logic.commands;
 
-import seedu.recipe.logic.commands.exceptions.CommandException;
-import seedu.recipe.model.Model;
-import seedu.recipe.model.recipe.Recipe;
-
 import static java.util.Objects.requireNonNull;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_DURATION;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
@@ -11,6 +7,10 @@ import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_PORTION;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_STEP;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
+
+import seedu.recipe.logic.commands.exceptions.CommandException;
+import seedu.recipe.model.Model;
+import seedu.recipe.model.recipe.Recipe;
 
 /**
  * Adds a recipe to the recipe book.

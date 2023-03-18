@@ -1,31 +1,26 @@
 package seedu.recipe.logic.parser;
 
-import org.junit.jupiter.api.Test;
-import seedu.recipe.logic.commands.AddCommand;
-import seedu.recipe.logic.commands.ClearCommand;
-import seedu.recipe.logic.commands.DeleteCommand;
-import seedu.recipe.logic.commands.EditCommand;
-import seedu.recipe.logic.commands.ExitCommand;
-import seedu.recipe.logic.commands.FindCommand;
-import seedu.recipe.logic.commands.HelpCommand;
-import seedu.recipe.logic.commands.ListCommand;
-import seedu.recipe.logic.parser.exceptions.ParseException;
-import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
-import seedu.recipe.model.recipe.Recipe;
-import seedu.recipe.testutil.EditRecipeDescriptorBuilder;
-import seedu.recipe.testutil.RecipeBuilder;
-import seedu.recipe.testutil.RecipeUtil;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.recipe.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.recipe.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.recipe.testutil.Assert.assertThrows;
 import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Test;
+
+import seedu.recipe.logic.commands.ClearCommand;
+import seedu.recipe.logic.commands.DeleteCommand;
+import seedu.recipe.logic.commands.ExitCommand;
+import seedu.recipe.logic.commands.FindCommand;
+import seedu.recipe.logic.commands.HelpCommand;
+import seedu.recipe.logic.commands.ListCommand;
+import seedu.recipe.logic.parser.exceptions.ParseException;
+import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
 
 public class RecipeBookParserTest {
 
@@ -90,7 +85,7 @@ public class RecipeBookParserTest {
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-                -> parser.parseCommand(""));
+            -> parser.parseCommand(""));
     }
 
     @Test

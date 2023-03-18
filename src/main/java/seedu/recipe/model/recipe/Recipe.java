@@ -1,16 +1,18 @@
 package seedu.recipe.model.recipe;
 
-import seedu.recipe.model.recipe.exceptions.RecipePortionNotPresentException;
-import seedu.recipe.model.tag.Tag;
+import static seedu.recipe.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static seedu.recipe.commons.util.CollectionUtil.requireAllNonNull;
+import seedu.recipe.model.recipe.exceptions.RecipeDurationNotPresentException;
+import seedu.recipe.model.recipe.exceptions.RecipePortionNotPresentException;
+import seedu.recipe.model.tag.Tag;
 
 /**
  * Represents a Recipe in the recipe book.
@@ -60,7 +62,7 @@ public class Recipe {
     }
 
     public RecipeDuration getDuration() {
-        duration.orElseThrow(RecipePortionNotPresentException::new);
+        duration.orElseThrow(RecipeDurationNotPresentException::new);
         return duration.get();
     }
 
@@ -81,15 +83,14 @@ public class Recipe {
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
+     * @return A set of the tags associated with this Recipe.
      */
     public Set<Tag> getTags() {
         return tags;
     }
 
     public void setTags(Tag... tags) {
-        for (Tag tag : tags) {
-            this.tags.add(tag);
-        }
+        this.tags.addAll(Arrays.asList(tags));
     }
 
     public List<Step> getSteps() {
@@ -149,27 +150,27 @@ public class Recipe {
         builder.append(getName());
 
         portion.ifPresent(p -> {
-            builder.append("; Portion: ").append(p);
+            builder.append(";\nPortion: ").append(p);
         });
 
         duration.ifPresent(d -> {
-            builder.append("; Duration: ").append(d);
+            builder.append(";\nDuration: ").append(d);
         });
 
         if (!tags.isEmpty()) {
-            builder.append("; Tags: ");
+            builder.append(";\nTags: ");
             tags.forEach(builder::append);
         }
 
         if (!ingredients.isEmpty()) {
-            builder.append("; Ingredients: ");
-            ingredients.forEach(i -> builder.append(i).append(", "));
+            builder.append(";\nIngredients: ");
+            ingredients.forEach(i -> builder.append(i).append(",\n"));
         }
 
         if (!steps.isEmpty()) {
-            builder.append("; Steps: ");
-            for (int i = 1; i <= steps.size(); i++) {
-                builder.append(String.format("%s. %s, ", i, steps.get(i)));
+            builder.append(";\nSteps: ");
+            for (int i = 0; i < steps.size(); i++) {
+                builder.append(String.format("%s. %s,\n", i + 1, steps.get(i)));
             }
         }
         return builder.toString();

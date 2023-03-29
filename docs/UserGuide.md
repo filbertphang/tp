@@ -12,6 +12,7 @@ features in mind so you can always find the recipe you need! Make use of ***RIZZ
   {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-after: always;"></div>
 
 ## Features
 
@@ -185,6 +186,7 @@ Exits the program and closes the window.
 Format:
 `exit`
 
+<div style="page-break-after: always;"></div>
 
 ## Managing the Data
 
@@ -205,6 +207,8 @@ If your changes to the data file makes its format invalid, ***RIZZ***ipe will di
 _Details coming soon ..._
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ## FAQ
 
